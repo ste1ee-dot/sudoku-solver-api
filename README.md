@@ -12,7 +12,7 @@ Use my project with go
 ```
 
 to run it, from projects directory.
-URL format should be localhost:8080/sudoku?x1y1=1
+URL format should be localhost:8080/sudoku?x1y1=1&x2y1=5.......
 
 
 ## Packages used
