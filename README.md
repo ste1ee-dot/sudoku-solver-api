@@ -1,6 +1,6 @@
 # SUDOKU SOLVER API
 
-This project was made on purpose of learning [Go](https://go.dev/). It's probably really unoptimized, any criticizm is welcome.
+This project was made on purpose of learning [Go](https://go.dev/). It's probably really unoptimized, any criticizm is welcome. Also it is worth to mention that this backend API is stateless and made by only using standard go libraries.
 
 
 ## Usage
