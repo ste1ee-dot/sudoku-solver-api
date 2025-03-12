@@ -78,7 +78,6 @@ func main() {
 		w.Write([]byte("Accesable modes are with 9, 18 and 27 cues! All are accesible by adding number of cues like so /sudoku/numberOfCues"))
 	})
 
-	//var sudoku [9][9]int
 	var sudoku Sudoku
 
 	for i := range 9 {
@@ -111,19 +110,9 @@ func main() {
 					panic(err)
 				}
 
-				//w.Write([]byte(fmt.Sprintf("X: %d, Y: %d, Value: %d \n", x, y, v)))
-
 				sudoku.board[x][y] = v
 
 				w.Header().Set("Content-Type", "text/plain")
-
-				//for i := range 9 {
-				//	for j := range 9 {
-				//		fmt.Fprintf(w, "%d ", sudoku[i][j])
-				//	}
-
-				//	fmt.Fprintf(w, "\n")
-				//}
 
 			}
 		}
