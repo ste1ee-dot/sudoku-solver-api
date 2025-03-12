@@ -11,7 +11,7 @@ type Sudoku struct {
 	board [9][9]int
 }
 
-func isSafe(sudoku Sudoku, y int, x int, value int) bool {
+func isSafe(sudoku *Sudoku, y int, x int, value int) bool {
 	for i := range 9 {
 		if sudoku.board[y][i] == value {
 			return false
@@ -38,15 +38,13 @@ func isSafe(sudoku Sudoku, y int, x int, value int) bool {
 	return true
 }
 
-func solveSudoku(sudoku Sudoku, y int, x int) bool {
-	if x == 9 && y == 9 {
+func solveSudoku(sudoku *Sudoku, y int, x int) bool {
+	if y == 9 {
 		return true
 	}
 
 	if x == 9 {
-
-		y++
-		x = 0
+		return solveSudoku(sudoku, y+1, 0)
 
 	}
 
@@ -54,7 +52,7 @@ func solveSudoku(sudoku Sudoku, y int, x int) bool {
 		return solveSudoku(sudoku, y, x+1)
 	}
 
-	for value := range 9 {
+	for value := 1; value <= 9; value++ {
 		if isSafe(sudoku, y, x, value) {
 			sudoku.board[y][x] = value
 			if solveSudoku(sudoku, y, x+1) {
@@ -67,28 +65,29 @@ func solveSudoku(sudoku Sudoku, y int, x int) bool {
 	return false
 }
 
-func solveSudokuFR(sudoku Sudoku) {
+func solveSudokuFR(sudoku *Sudoku) {
 	solveSudoku(sudoku, 0, 0)
 
 }
 
-func main() {
-	router := http.NewServeMux()
-	router.HandleFunc("/sudoku", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Accesable modes are with 9, 18 and 27 cues! All are accesible by adding number of cues like so /sudoku/numberOfCues"))
-	})
+var previousParams = ""
 
+func main() {
 	var sudoku Sudoku
 
-	for i := range 9 {
-		for j := range 9 {
-			sudoku.board[i][j] = 0
-		}
-	}
-
-	router.HandleFunc("/sudoku/9", func(w http.ResponseWriter, r *http.Request) {
-
+	router := http.NewServeMux()
+	router.HandleFunc("/sudoku", func(w http.ResponseWriter, r *http.Request) {
 		queries := r.URL.Query()
+
+		currentParams := fmt.Sprintf("%v", queries)
+
+		if currentParams != previousParams {
+			for i := range 9 {
+				for j := range 9 {
+					sudoku.board[i][j] = 0
+				}
+			}
+		}
 
 		for pos, values := range queries {
 
@@ -126,7 +125,7 @@ func main() {
 			fmt.Fprintf(w, "\n")
 		}
 
-		solveSudokuFR(sudoku)
+		solveSudokuFR(&sudoku)
 
 		fmt.Fprintf(w, "\nSolved puzzle: \n")
 
@@ -136,6 +135,8 @@ func main() {
 			}
 			fmt.Fprintf(w, "\n")
 		}
+
+		previousParams = currentParams
 
 	})
 
