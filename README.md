@@ -8,7 +8,7 @@ This project was made on purpose of learning [Go](https://go.dev/). It's probabl
 Use my project with go
 
 ```bash
-  go run .
+go run .
 ```
 
 to run it, from projects directory.
